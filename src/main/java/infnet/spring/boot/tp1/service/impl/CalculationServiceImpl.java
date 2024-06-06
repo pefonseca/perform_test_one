@@ -1,5 +1,6 @@
 package infnet.spring.boot.tp1.service.impl;
 
+import infnet.spring.boot.tp1.dto.CalculationChangeDTO;
 import infnet.spring.boot.tp1.dto.CalculationDTO;
 import infnet.spring.boot.tp1.entity.Calculation;
 import infnet.spring.boot.tp1.service.CalculationService;
@@ -36,5 +37,18 @@ public class CalculationServiceImpl implements CalculationService {
             calculations = calculationMap.values().stream().filter(calc -> calc.getTypeCalculation().equals(typeCalculate)).toList();
         }
         return calculations;
+    }
+
+    @Override
+    public Calculation changeCalculate(Long id, CalculationChangeDTO calculationChangeDTO) {
+        Calculation calculation = calculationMap.get(id);
+        BeanUtils.copyProperties(calculationChangeDTO, calculation);
+        calculation.performCalculation();
+        return calculation;
+    }
+
+    @Override
+    public void deleteCalculation(Long id) {
+        calculationMap.remove(id);
     }
 }
